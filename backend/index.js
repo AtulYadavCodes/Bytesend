@@ -6,7 +6,7 @@ import cors from 'cors'
 import FormData from 'form-data'
 
 const app=express();
-const port =3000;
+const port =process.env.PORT||3000;
 app.use(express.text());
 app.use(cors({origin:'*'}));
 app.use(fileupload());
