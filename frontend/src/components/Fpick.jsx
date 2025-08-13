@@ -1,5 +1,6 @@
 import React, {useState, useRef } from 'react'
 import axios from 'axios'
+import image from '../assets/free-file-icon-1453-thumb.png'
 let qr,link;
 function Fpick() {
   const inputref=useRef(null);
@@ -19,14 +20,14 @@ function Fpick() {
     formdata.append('file',file);
     axios({
       method:'post',
-      url:'/fapi',
+      url:'https://bytesend.onrender.com/fapi',
       data:formdata,
       
     }).then(async (response)=>
       {
         console.log(response);
         let filep=`${response.data.files[0].url}`;
-        let proxdownlo=`http://localhost:3000/download?url=${encodeURIComponent(filep)}`
+        let proxdownlo=`https://bytesend.onrender.com/download?url=${encodeURIComponent(filep)}`
         qr=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${proxdownlo}`;
         imgref.current.src=qr
         setscantodownload('scan to download your file');
@@ -62,7 +63,7 @@ function Fpick() {
            <label onClick={()=>(inputref.current.click())} className=' relative block h-40 w-40 bg-gray-100 text-center py-10  border-dashed border-1  rounded-2xl border-gray-500'>click to choose a file
             <br/>
 
-            <img src=".\src\assets\free-file-icon-1453-thumb.png" className='absolute h-10 w-10 left-1/2 -translate-x-1/2 p-1 mt-2' alt="" />
+            <img src={image} className='absolute h-10 w-10 left-1/2 -translate-x-1/2 p-1 mt-2' alt="" />
             </label>
            </div>
            
