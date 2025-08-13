@@ -55,7 +55,7 @@ app.post('/ftex',(req,res)=>{
   })
   .then(response=>res.send(response.data))
   } catch (error) {
-    // console.error(error);
+    res.send("error in uploading file"+ error.message);
   }
 })
 
