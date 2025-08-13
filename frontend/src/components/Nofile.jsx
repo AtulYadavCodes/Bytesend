@@ -30,7 +30,7 @@ function Nofile() {
             <textarea ref={inputref} placeholder='Enter text here' className=' border-1 text-2xl text-left  h-[50vh] w-full bg-gray-20 text-nowrap resize-none'/>
             <div className='h-[20vh] w-full rounded-2xl flex flex-row'>
               <div className='h-[20vh] w-[45vw] lg:w-[20vw] flex flex-col items-start '>
-                <div className= {`h-[20vh] w-[20vw] flex flex-col items-start ${get}`}>
+                <div className= {`h-[20vh]  w-[45vw] lg:w-[20vw] flex flex-col items-start ${get}`}>
                 <input ref={getinput} type='text' placeholder='enter code' className='h-[30%] w-[80%] bg-gray-100 border-1 my-1'/>
                 <button  onClick={gtext} type='button' ref={getbut} className='h-[30%] w-[80%] bg-blue-300 '>Get</button>
               </div>
