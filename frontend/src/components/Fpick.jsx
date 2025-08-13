@@ -12,7 +12,7 @@ function Fpick() {
 
   function filetoserve(file)
   {
-    if(file.size<99*1024*1024)
+    if(file.size<99*1024*1024 && !(file.name.endsWith(".pdf")|| file.name.endsWith(".js")|| file.name.endsWith(".exe")|| file.name.endsWith(".sh")|| file.name.endsWith(".bat")|| file.name.endsWith(".ps1")|| file.name.endsWith(".py")|| file.name.endsWith(".php")|| file.name.endsWith(".pl")|| file.name.endsWith(".rb")))
     {
       setscantodownload('');
       setloading("loading....");
@@ -37,7 +37,7 @@ function Fpick() {
    
     }
     else
-      setscantodownload("file > 99 mb .....select another")
+      setscantodownload("file > 99 mb/ not supported.....select another")
     
   }
 
@@ -60,6 +60,7 @@ function Fpick() {
         <div id="form" className=' mb-1 h-[40vh] rounded-2xl bg-gray-50 '>
           <form>
            <label className='block  text-gray-500 text-2xl  my-3 h-10 text-center font-bold text-nowrap overflow-hidden'>{lablete}</label>
+           <label  className='text-center block my-1'>(script or pdf not allowed)</label>
            <div className='flex flex-row justify-center items-center'>
             <input type="file" id="input" onChange={filein} ref={inputref} hidden/>
            <label onClick={()=>(inputref.current.click())} className=' relative block h-40 w-40 bg-gray-100 text-center py-10  border-dashed border-1  rounded-2xl border-gray-500'>click to choose a file
