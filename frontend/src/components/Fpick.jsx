@@ -1,6 +1,7 @@
 import React, {useState, useRef } from 'react'
 import axios from 'axios'
 import image from '../assets/free-file-icon-1453-thumb.png'
+import plaeho from '../assets/gold-border-coton-tulear-breeder-puppies-for-sale-texas-1.png'
 let qr,link;
 function Fpick() {
   const inputref=useRef(null);
@@ -14,8 +15,8 @@ function Fpick() {
     if(file.size<99*1024*1024)
     {
       setscantodownload('');
-    setloading("loading....");
-
+      setloading("loading....");
+    imgref.current.style.opacity=0;
     const formdata=new FormData();
     formdata.append('file',file);
     axios({
@@ -25,6 +26,7 @@ function Fpick() {
       
     }).then(async (response)=>
       {
+        imgref.current.style.opacity=1;
         console.log(response);
         let filep=`${response.data.files[0].url}`;
         let proxdownlo=`https://bytesend.onrender.com/download?url=${encodeURIComponent(filep)}`
@@ -75,7 +77,7 @@ function Fpick() {
           <div className='h-40 w-40 bg-white'>
 
           </div>
-            <img ref={imgref} alt=""  className='absolute '/>
+            <img  ref={imgref} alt=""  className='absolute '/>
         </div>
 
     </div>
