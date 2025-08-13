@@ -1,0 +1,84 @@
+import React, {useState, useRef } from 'react'
+import axios from 'axios'
+let qr,link;
+function Fpick() {
+  const inputref=useRef(null);
+  let [loading,setloading]=useState("QR Code");
+  let [lablete,setlabelte]=useState("Select files to share");
+  let [scantodownload,setscantodownload]=useState('');
+  let imgref=useRef(null);
+
+  function filetoserve(file)
+  {
+    if(file.size<99*1024*1024)
+    {
+      setscantodownload('');
+    setloading("loading....");
+
+    const formdata=new FormData();
+    formdata.append('file',file);
+    axios({
+      method:'post',
+      url:'/fapi',
+      data:formdata,
+      
+    }).then(async (response)=>
+      {
+        console.log(response);
+        let filep=`${response.data.files[0].url}`;
+        let proxdownlo=`http://localhost:3000/download?url=${encodeURIComponent(filep)}`
+        qr=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${proxdownlo}`;
+        imgref.current.src=qr
+        setscantodownload('scan to download your file');
+      })
+   
+    }
+    else
+      setscantodownload("file > 99 mb .....select another")
+    
+  }
+
+  function filein()
+  {
+    if(inputref.current&&inputref.current.files&&inputref.current.files[0])
+    {
+    setlabelte(inputref.current.files[0].name);
+    
+    filetoserve(inputref.current.files[0]);
+    }
+    else
+    {
+      setlabelte("no file selected, choose again");
+    }
+  }
+
+  return (
+    <div className='bg-gray-50  h-[80vh] w-[90vw] lg:w-[40vw] drop-shadow-2xl rounded-2xl flex flex-col p-10'>
+        <div id="form" className=' mb-1 h-[40vh] rounded-2xl bg-gray-50 '>
+          <form>
+           <label className='block  text-gray-500 text-2xl  my-3 h-10 text-center font-bold text-nowrap overflow-hidden'>{lablete}</label>
+           <div className='flex flex-row justify-center items-center'>
+            <input type="file" id="input" onChange={filein} ref={inputref} hidden/>
+           <label onClick={()=>(inputref.current.click())} className=' relative block h-40 w-40 bg-gray-100 text-center py-10  border-dashed border-1  rounded-2xl border-gray-500'>click to choose a file
+            <br/>
+
+            <img src=".\src\assets\free-file-icon-1453-thumb.png" className='absolute h-10 w-10 left-1/2 -translate-x-1/2 p-1 mt-2' alt="" />
+            </label>
+           </div>
+           
+          </form>
+        </div>
+        <label className='w-full text-center p-0 m-0 text-red-700'>{scantodownload}</label>
+        <div id="qrshow" className=' relative h-[40vh] mt-1 flex flex-row  justify-center  rounded-2xl items-center bg-gray-200'>
+          <label className='absolute mt-1 text-2xl'>{loading}</label>
+          <div className='h-40 w-40 bg-white'>
+
+          </div>
+            <img ref={imgref} alt=""  className='absolute '/>
+        </div>
+
+    </div>
+  )
+}
+
+export default Fpick
