@@ -31,7 +31,7 @@ Paste it into ByteSend, share the retrieval code, and it self-destructs after a 
 ## 📸 Screenshots
 
 ### File Upload & Share
-![ByteSend File Upload]
+![ByteSend File Upload](./Screenshot 2025-08-15 103652.png)
 
 ### Text Send & Retrieve
 ![ByteSend Text Send]
