@@ -40,6 +40,8 @@ Paste it into ByteSend, share the retrieval code, and it self-destructs after a 
 
 ## 📂 Project Structure
 
+## 📂 Project Structure
+```text
 Bytesend/
 │
 ├── backend/                  # Node.js + Express backend
@@ -58,6 +60,7 @@ Bytesend/
 │
 ├── README.md
 └── LICENSE
+```
 
 
 ## ⚠ Limitations
