@@ -28,6 +28,15 @@ Paste it into ByteSend, share the retrieval code, and it self-destructs after a 
 
 ---
 
+## 📸 Screenshots
+
+### File Upload & Share
+![ByteSend File Upload]
+
+### Text Send & Retrieve
+![ByteSend Text Send]
+
+
 ## 🛠 Tech Stack
 - Backend: Node.js, Express
 - Frontend: React (Vite) + Tailwind CSS
@@ -40,7 +49,6 @@ Paste it into ByteSend, share the retrieval code, and it self-destructs after a 
 
 ## 📂 Project Structure
 
-## 📂 Project Structure
 ```text
 Bytesend/
 │
