@@ -39,26 +39,26 @@ Paste it into ByteSend, share the retrieval code, and it self-destructs after a 
 ---
 
 ## 📂 Project Structure
+
 Bytesend/
 │
-├── backend/ # Node.js + Express backend
-│ ├── index.js # Main server entry
-│ ├── routes/ # API route handlers
-│ ├── utils/ # Helper functions
-│ ├── package.json
+├── backend/                  # Node.js + Express backend
+│   ├── index.js               # Main server entry
+│   ├── routes/                # API route handlers
+│   ├── utils/                  # Helper functions
+│   ├── package.json
 │
-├── frontend/ # React (Vite) frontend
-│ ├── src/
-│ │ ├── components/ # UI components
-│ │ ├── pages/ # Page components
-│ │ ├── App.jsx
-│ │ ├── main.jsx
-│ ├── package.json
+├── frontend/                 # React (Vite) frontend
+│   ├── src/
+│   │   ├── components/        # UI components
+│   │   ├── pages/             # Page components
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   ├── package.json
 │
 ├── README.md
 └── LICENSE
 
----
 
 ## ⚠ Limitations
 - Max file size: 99 MB (app enforced) / 128 MB (Uguu hard limit)
