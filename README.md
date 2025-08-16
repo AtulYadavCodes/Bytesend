@@ -4,7 +4,7 @@ ByteSend is a lightweight Node.js + React app for quick, anonymous sharing of fi
 
 ---
 
-#As the server is running on a free tier machine on render, so the first api call might give error or take a few minutes as render moves the server to sleep mode and reruns the server once a api call is made which can cause errors
+# As the server is running on a free tier machine on render, so the first api call might give error or take a few minutes as render moves the server to sleep mode and reruns the server once a api call is made which can cause errors
 
 ## 🚀 Features
 
