@@ -111,7 +111,8 @@ app.post('/fapi',async (req,res)=>{
 //    res.json(response.data);
 //    console.log(response.data);
 try 
-  {let form=new FormData();
+  {
+    let form=new FormData();
 form.append('files[]',req.files.file.data,req.files.file.name);
 console.log(req.files.file.name);
       let response=await axios({
@@ -121,9 +122,7 @@ console.log(req.files.file.name);
         headers:
             form.getHeaders()
       })
-      if(response.ok){
         res.send (response.data);
-      }
     } catch (error) {
       res.status(415).send('Error uploading the file, unsupported media type');
 }
