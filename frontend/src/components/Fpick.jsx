@@ -35,7 +35,8 @@ function Fpick() {
         setscantodownload('scan to download your file');
       }).catch((err)=>
       {
-        setscantodownload('error in uploading file,'+err.message);
+        setloading("QR Code");
+        setscantodownload('error in uploading file, unsupported file type');
       })
    
     }
