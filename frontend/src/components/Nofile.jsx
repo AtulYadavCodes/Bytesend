@@ -20,7 +20,7 @@ function Nofile() {
   }
   let gtext=(event)=>{
     if(getinput.current.value.length>0)
-   { axios.get(`https://bytesend.onrender.com/gtext?url=https://${getinput.current.value.charAt(0)}.uguu.se/${getinput.current.value.substring(1)}.txt`).then((res)=>{inputref.current.value=res.data;})};
+   { axios.get(`https://bytesend.onrender.com/gtext?url=https://${getinput.current.value.charAt(0)}.uguu.se/${getinput.current.value.substring(1)}.txt`).then((res)=>{inputref.current.value=res.data;}).catch((err)=>{inputref.current.value=err.response.data;})};
   }
 
   
