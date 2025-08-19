@@ -28,11 +28,28 @@ app.use(fileupload());
 // }
 
 app.get('/gtext',(req,res)=>{
-  console.log(req.query.url);
-  axios.get(req.query.url)
+//  console.log(req.query.url);
+    axios.get(req.query.url)
   .then(response => {
     res.send(response.data);
   })
+  .catch(error => {
+    if(error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+    console.error('Error fetching text:', error);
+    res.status(404).send('Error fetching text..mistake in code');
+    }
+    else if(error.request) {
+      // The request was made but no response was received
+      //console.error('No response received:', error.request);
+      res.status(502).send('No response received from the server');
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error:', error.message);
+      res.status(400).send('Error in request setup');
+    }
+  });
 })
 app.post('/ftex',(req,res)=>{
 //   console.log(req.body);
@@ -55,7 +72,7 @@ app.post('/ftex',(req,res)=>{
   })
   .then(response=>res.send(response.data))
   } catch (error) {
-    // console.error(error);
+     res.status(error.status).send('Error uploading the file,'+error.message);
   }
 })
 
@@ -93,7 +110,8 @@ app.post('/fapi',async (req,res)=>{
 //    let response= await fapi(form);
 //    res.json(response.data);
 //    console.log(response.data);
-let form=new FormData();
+try 
+  {let form=new FormData();
 form.append('files[]',req.files.file.data,req.files.file.name);
 console.log(req.files.file.name);
       let response=await axios({
@@ -103,7 +121,12 @@ console.log(req.files.file.name);
         headers:
             form.getHeaders()
       })
-      res.send (response.data);
+      if(response.ok){
+        res.send (response.data);
+      }
+    } catch (error) {
+      res.status(415).send('Error uploading the file, unsupported media type');
+}
 })
 app.get('/',(req,res)=>{
     res.send("hi");
