@@ -33,6 +33,9 @@ function Fpick() {
         qr=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${proxdownlo}`;
         imgref.current.src=qr
         setscantodownload('scan to download your file');
+      }).catch((err)=>
+      {
+        setscantodownload('error in uploading file,'+err.message);
       })
    
     }
