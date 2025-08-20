@@ -59,14 +59,14 @@ function Fpick() {
   }
 
   return (
-    <div className='bg-gray-50  h-[629px] w-[90vw] lg:w-[40vw] drop-shadow-2xl rounded-2xl flex flex-col p-10'>
-        <div id="form" className=' mb-1 h-[300px] rounded-2xl bg-gray-50 '>
+    <div className='bg-gray-50 min-h-[620px] h-[80vh] w-[90vw] lg:w-[40vw] drop-shadow-2xl rounded-2xl flex flex-col p-10'>
+        <div id="form" className=' mb-1 min-h-[250px] h-[40vh] rounded-2xl bg-gray-50 '>
           <form>
            <label className='block  text-gray-500 text-2xl  my-3 h-10 text-center font-bold text-nowrap overflow-hidden'>{lablete}</label>
            <label  className='text-center block my-1'>(script or pdf not allowed)</label>
            <div className='flex flex-row justify-center items-center'>
             <input type="file" id="input" onChange={filein} ref={inputref} hidden/>
-           <label onClick={()=>(inputref.current.click())} className=' relative block h-40 w-40 bg-gray-100 text-center py-10  border-dashed border-1  rounded-2xl border-gray-500'>click to choose a file
+           <label onClick={()=>(inputref.current.click())} className=' relative block min-h-40 h-[22vh] min-w-40 w-[22vh] bg-gray-100 text-center px-1 py-10  border-dashed border-1  rounded-2xl border-gray-500'>click to choose a file
             <br/>
 
             <img src={image} className='absolute h-10 w-10 left-1/2 -translate-x-1/2 p-1 mt-2' alt="" />
@@ -76,9 +76,9 @@ function Fpick() {
           </form>
         </div>
         <label className='w-full text-center p-0 m-0 text-red-700'>{scantodownload}</label>
-        <div id="qrshow" className=' relative h-[300px] mt-1 flex flex-row  justify-center  rounded-2xl items-center bg-gray-200'>
+        <div id="qrshow" className=' relative min-h-[260px] h-[40vh] mt-1 flex flex-row  justify-center  rounded-2xl items-center bg-gray-200'>
           <label className='absolute mt-1 text-2xl'>{loading}</label>
-          <div className='h-40 w-40 bg-white'>
+          <div className='min-h-40 h-[22vh] min-w-40 w-[22vh] m-1 bg-white'>
 
           </div>
             <img  ref={imgref} alt=""  className='absolute '/>
