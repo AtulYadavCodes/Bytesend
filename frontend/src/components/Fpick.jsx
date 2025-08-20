@@ -27,7 +27,6 @@ function Fpick() {
     }).then(async (response)=>
       {
         imgref.current.style.opacity=1;
-        console.log(response);
         let filep=`${response.data.files[0].url}`;
         let proxdownlo=`https://bytesend.onrender.com/download?url=${encodeURIComponent(filep)}`
         qr=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${proxdownlo}`;
@@ -36,7 +35,7 @@ function Fpick() {
       }).catch((err)=>
       {
         setloading("QR Code");
-        setscantodownload('error in uploading file, unsupported file type');
+        setscantodownload(err.response.data);
       })
    
     }
@@ -60,8 +59,8 @@ function Fpick() {
   }
 
   return (
-    <div className='bg-gray-50  h-[80vh] w-[90vw] lg:w-[40vw] drop-shadow-2xl rounded-2xl flex flex-col p-10'>
-        <div id="form" className=' mb-1 h-[40vh] rounded-2xl bg-gray-50 '>
+    <div className='bg-gray-50  h-[629px] w-[90vw] lg:w-[40vw] drop-shadow-2xl rounded-2xl flex flex-col p-10'>
+        <div id="form" className=' mb-1 h-[300px] rounded-2xl bg-gray-50 '>
           <form>
            <label className='block  text-gray-500 text-2xl  my-3 h-10 text-center font-bold text-nowrap overflow-hidden'>{lablete}</label>
            <label  className='text-center block my-1'>(script or pdf not allowed)</label>
@@ -77,7 +76,7 @@ function Fpick() {
           </form>
         </div>
         <label className='w-full text-center p-0 m-0 text-red-700'>{scantodownload}</label>
-        <div id="qrshow" className=' relative h-[40vh] mt-1 flex flex-row  justify-center  rounded-2xl items-center bg-gray-200'>
+        <div id="qrshow" className=' relative h-[300px] mt-1 flex flex-row  justify-center  rounded-2xl items-center bg-gray-200'>
           <label className='absolute mt-1 text-2xl'>{loading}</label>
           <div className='h-40 w-40 bg-white'>
 
