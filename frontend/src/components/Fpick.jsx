@@ -75,8 +75,8 @@ function Fpick() {
            
           </form>
         </div>
-        <label className='w-full text-center p-0 m-0 text-red-700'>{scantodownload}</label>
-        <div id="qrshow" className=' relative min-h-[260px] h-[40vh] mt-1 flex flex-row  justify-center  rounded-2xl items-center bg-gray-200'>
+        <label className='w-full text-center p-0 mt-[10px] text-red-700'>{scantodownload}</label>
+        <div id="qrshow" className=' relative min-h-[282px] h-[40vh] mt-1 flex flex-row  justify-center  rounded-2xl items-center bg-gray-200'>
           <label className='absolute mt-1 text-2xl'>{loading}</label>
           <div className='min-h-40 h-[22vh] min-w-40 w-[22vh] m-1 bg-white'>
 
