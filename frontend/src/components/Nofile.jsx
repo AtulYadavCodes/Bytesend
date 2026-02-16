@@ -16,9 +16,11 @@ function Nofile() {
   {
     event.preventDefault();
    // inputref.current.value="sdafkjbaljkfafanafaf\naf\naf\na\nfa\nfa\nf";
+   inputsen.current.value="loading....";
     axios.post('https://bytesend.onrender.com/ftex',inputref.current.value,{headers:{'Content-Type':'text/plain'}}).then((Response)=>{setv(Response.data.files[0].url.charAt(8));inputsen.current.value=Response.data.files[0].url.charAt(8)+Response.data.files[0].url.substring(18).split(".")[0]})
   }
   let gtext=(event)=>{
+    inputref.current.value="loading....";
     if(getinput.current.value.length>0)
    { axios.get(`https://bytesend.onrender.com/gtext?url=https://${getinput.current.value.charAt(0)}.uguu.se/${getinput.current.value.substring(1)}.txt`).then((res)=>{inputref.current.value=res.data;}).catch((err)=>{inputref.current.value=err.response.data;})};
   }
