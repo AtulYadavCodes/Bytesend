@@ -2,6 +2,7 @@ import React, {useState, useRef } from 'react'
 import axios from 'axios'
 import image from '../assets/free-file-icon-1453-thumb.png'
 import plaeho from '../assets/gold-border-coton-tulear-breeder-puppies-for-sale-texas-1.png'
+const API_BASE='http://localhost:3000';
 let qr,link;
 function Fpick() {
   const inputref=useRef(null);
@@ -21,14 +22,14 @@ function Fpick() {
     formdata.append('file',file);
     axios({
       method:'post',
-      url:'https://bytesend.onrender.com/fapi',
+      url:`${API_BASE}/fapi`,
       data:formdata,
       
     }).then(async (response)=>
       {
         imgref.current.style.opacity=1;
         let filep=`${response.data.files[0].url}`;
-        let proxdownlo=`https://bytesend.onrender.com/download?url=${encodeURIComponent(filep)}`
+        let proxdownlo=`${API_BASE}/download?url=${encodeURIComponent(filep)}`
         qr=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${proxdownlo}`;
         imgref.current.src=qr
         setscantodownload('scan to download your file');
