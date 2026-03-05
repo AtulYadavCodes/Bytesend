@@ -2,7 +2,7 @@ import React, {useState, useRef } from 'react'
 import axios from 'axios'
 import image from '../assets/free-file-icon-1453-thumb.png'
 import plaeho from '../assets/gold-border-coton-tulear-breeder-puppies-for-sale-texas-1.png'
-const API_BASE='http://localhost:3000';
+const API_BASE='/api';
 let qr,link;
 function Fpick() {
   const inputref=useRef(null);
