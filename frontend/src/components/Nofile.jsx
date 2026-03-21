@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import axios from 'axios';
-const API_BASE='http://localhost:3000';
+const API_BASE='/api';
 function Nofile() {
   let [get,setget]=useState("hidden");
   let [send,setsend]=useState("visible");
