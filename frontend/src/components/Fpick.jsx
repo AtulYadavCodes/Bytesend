@@ -63,7 +63,7 @@ function Fpick() {
         <div id="form" className=' mb-1 min-h-[250px] h-[40vh] rounded-2xl bg-gray-50 '>
           <form>
            <label className='block  text-gray-500 text-2xl  my-3 h-10 text-center font-bold text-nowrap overflow-hidden'>{lablete}</label>
-           <label  className='text-center block my-1'>(script or pdf not allowed)</label>
+           <label  className='text-center block my-1'>(extensions .sh or .bat not allowed)</label>
            <div className='flex flex-row justify-center items-center'>
             <input type="file" id="input" onChange={filein} ref={inputref} hidden/>
            <label onClick={()=>(inputref.current.click())} className=' relative block min-h-40 h-[22vh] min-w-40 w-[22vh] bg-gray-100 text-center px-1 py-10  border-dashed border-1  rounded-2xl border-gray-500'>click to choose a file
