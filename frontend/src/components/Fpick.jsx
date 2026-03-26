@@ -13,7 +13,7 @@ function Fpick() {
 
   function filetoserve(file)
   {
-    if(file.size<99*1024*1024 && !(file.name.endsWith(".pdf")|| file.name.endsWith(".js")|| file.name.endsWith(".exe")|| file.name.endsWith(".sh")|| file.name.endsWith(".bat")|| file.name.endsWith(".ps1")|| file.name.endsWith(".py")|| file.name.endsWith(".php")|| file.name.endsWith(".pl")|| file.name.endsWith(".rb")))
+    if(file.size<99*1024*1024 && !(file.name.endsWith(".sh")|| file.name.endsWith(".bat")))
     {
       setscantodownload('');
       setloading("loading....");
@@ -28,9 +28,8 @@ function Fpick() {
     }).then(async (response)=>
       {
         imgref.current.style.opacity=1;
-        let filep=`${response.data.files[0].url}`;
-        let proxdownlo=`${API_BASE}/download?url=${encodeURIComponent(filep)}`
-        qr=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${proxdownlo}`;
+        let filep=`${response.data.url}`;
+        qr=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${filep}`;
         imgref.current.src=qr
         setscantodownload('scan to download your file');
       }).catch((err)=>
