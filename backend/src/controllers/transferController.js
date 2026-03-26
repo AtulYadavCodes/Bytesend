@@ -51,8 +51,9 @@ export const uploadFile = async (req, res) => {
       if(err)      {
         return res.status(500).send('Error saving the file');
       }
+      res.json({url:`https://bytesend.live/api/download?path=${(uploadfilen)}`});
     });
-    res.json({url:`https://bytesend.live/api/download?path=${(uploadfilen)}`});
+    
   } catch (error) {
     res.status(415).send('Error uploading the file, unsupported media type');
   }
