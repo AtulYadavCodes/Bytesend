@@ -44,7 +44,7 @@ export const uploadFile = async (req, res) => {
       return res.status(400).send('No file uploaded');
     }
     const uploadfile=req.files?.file;
-    const uploadfilen=`${Date.now()}+${uploadfile.name}`;
+    const uploadfilen=`${Date.now()}name${uploadfile.name}`;
     const uploadpath=path.join(process.cwd(),'uploads',uploadfilen);
     uploadfile.mv(uploadpath,(err)=>
     {
