@@ -7,7 +7,7 @@ export const healthCheck = (req, res) => {
 };
 
 export const getTextContent = (req, res) => {
-  const pathToFile = path.join(process.cwd(), 'upload', req.query.path + '.txt');
+  const pathToFile = path.join(process.cwd(), 'uploads', req.query.path + '.txt');
   if (!fs.existsSync(pathToFile)) {
     return res.status(404).send('File not found');
   }
@@ -18,7 +18,7 @@ export const uploadText = (req, res) => {
   let form = new FormData();
   const textContent = req.body;
   const filename = `${Date.now()}.txt`;
-  const pathToFile = path.join(process.cwd(), 'upload', filename);
+  const pathToFile = path.join(process.cwd(), 'uploads', filename);
   fs.promises.writeFile(pathToFile, textContent)
     .then( res.send(filename.slice(0, -4)))
     .catch((error) => {
