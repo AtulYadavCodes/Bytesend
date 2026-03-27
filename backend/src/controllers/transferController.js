@@ -62,7 +62,7 @@ export const downloadFile = async (req, res) => {
     }
     res.setHeader('Content-Disposition', `attachment; filename="${fileUrl}"`);
     res.setHeader('Content-Type', mime.lookup(uploadpath) || 'application/octet-stream' ); 
-    const stats = fs.promises.stat(uploadpath);
+    const stats =await fs.promises.stat(uploadpath)
     res.setHeader('Content-Length', stats.size);
     const stream = fs.createReadStream(uploadpath);
     stream.pipe(res);
