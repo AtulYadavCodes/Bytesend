@@ -23,7 +23,7 @@ function Nofile() {
   let gtext=(event)=>{
     inputref.current.value="loading....";
     if(getinput.current.value.length>0)
-   { axios.get(`${API_BASE}/gtext?path=${getinput.current.value}`).then((res)=>{inputref.current.value=res.text;}).catch((err)=>{inputref.current.value=err.response.data;})};
+   { axios.get(`${API_BASE}/gtext?path=${getinput.current.value}`).then((res)=>{inputref.current.value=res.data;}).catch((err)=>{inputref.current.value=err.response.data;})};
   }
 
   
