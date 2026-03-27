@@ -60,7 +60,7 @@ export const downloadFile = async (req, res) => {
     {
       return res.status(404).send('File not found');
     }
-    res.setHeader('Content-Disposition', `attachment; filename="${safeFileName}"`);
+    res.setHeader('Content-Disposition', `attachment; filename="${fileUrl}"`);
     res.setHeader('Content-Type', mime.lookup(uploadpath) || 'application/octet-stream' ); 
     const stats = fs.promises.stat(uploadpath);
     res.setHeader('Content-Length', stats.size);
