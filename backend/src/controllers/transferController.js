@@ -2,6 +2,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
 import path from 'path';
+import mime from 'mime-types';
 export const healthCheck = (req, res) => {
   res.send('hi');
 };
@@ -59,8 +60,12 @@ export const downloadFile = async (req, res) => {
     {
       return res.status(404).send('File not found');
     }
-    
-    return res.download(uploadpath, fileUrl);
+    res.setHeader('Content-Disposition', `attachment; filename="${safeFileName}"`);
+    res.setHeader('Content-Type', mime.lookup(uploadpath) || 'application/octet-stream' ); 
+    const stats = fs.promises.stat(uploadpath);
+    res.setHeader('Content-Length', stats.size);
+    const stream = fs.createReadStream(uploadpath);
+    stream.pipe(res);
   } catch (error) {
     res.status(500).send('Error downloading the file');
   }
