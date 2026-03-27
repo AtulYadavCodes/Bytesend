@@ -59,8 +59,8 @@ export const downloadFile = async (req, res) => {
     {
       return res.status(404).send('File not found');
     }
-    const fileStream = fs.createReadStream(uploadpath);
-    return fileStream.pipe(res);
+    
+    return res.download(uploadpath, fileUrl);
   } catch (error) {
     res.status(500).send('Error downloading the file');
   }
