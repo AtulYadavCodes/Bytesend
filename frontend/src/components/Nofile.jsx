@@ -18,12 +18,12 @@ function Nofile() {
     event.preventDefault();
    // inputref.current.value="sdafkjbaljkfafanafaf\naf\naf\na\nfa\nfa\nf";
    inputsen.current.value="loading....";
-    axios.post(`${API_BASE}/ftex`,inputref.current.value,{headers:{'Content-Type':'text/plain'}}).then((Response)=>{setv(Response.data.files[0].url.charAt(8));inputsen.current.value=Response.data.files[0].url.charAt(8)+Response.data.files[0].url.substring(18).split(".")[0]})
+    axios.post(`${API_BASE}/ftex`,inputref.current.value,{headers:{'Content-Type':'text/plain'}}).then((Response)=>{setv(Response.data);inputsen.current.value=Response.data})
   }
   let gtext=(event)=>{
     inputref.current.value="loading....";
     if(getinput.current.value.length>0)
-   { axios.get(`${API_BASE}/gtext?url=https://${getinput.current.value.charAt(0)}.uguu.se/${getinput.current.value.substring(1)}.txt`).then((res)=>{inputref.current.value=res.data;}).catch((err)=>{inputref.current.value=err.response.data;})};
+   { axios.get(`${API_BASE}/gtext?path=${getinput.current.value}`).then((res)=>{inputref.current.value=res.text;}).catch((err)=>{inputref.current.value=err.response.data;})};
   }
 
   

@@ -7,32 +7,20 @@ export const healthCheck = (req, res) => {
 };
 
 export const getTextContent = (req, res) => {
-  axios
-    .get(req.query.url)
-    .then((response) => {
-      res.send(response.data);
-    })
-    .catch((error) => {
-      if (error.response) {
-        res.status(404).send('Error fetching text..mistake in code');
-      } else if (error.request) {
-        res.status(502).send('No response received from the server');
-      } else {
-        res.status(400).send('Error in request setup');
-      }
-    });
+  const pathToFile = path.join(process.cwd(), 'upload', req.query.path + '.txt');
+  if (!fs.existsSync(pathToFile)) {
+    return res.status(404).send('File not found');
+  }
+  res.sendFile(pathToFile);
 };
 
 export const uploadText = (req, res) => {
   let form = new FormData();
-  form.append('files[]', req.body, 'file.txt');
-  axios({
-    method: 'post',
-    url: 'https://uguu.se/upload',
-    data: form,
-    headers: form.getHeaders(),
-  })
-    .then((response) => res.send(response.data))
+  const textContent = req.body;
+  const filename = `${Date.now()}.txt`;
+  const pathToFile = path.join(process.cwd(), 'upload', filename);
+  fs.promises.writeFile(pathToFile, textContent)
+    .then( res.send(filename.slice(0, -4)))
     .catch((error) => {
       res.status(error.response?.status || 500).send('Error uploading the file,' + error.message);
     });
