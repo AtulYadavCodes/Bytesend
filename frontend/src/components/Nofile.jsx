@@ -40,7 +40,7 @@ function Nofile() {
               </div>
               <label
                 onClick={() => (setget("visible"), setsend("hidden"))}
-                className={`${send} cursor-pointer text-blue-600 underline font-medium hover:text-blue-800`}
+                className={`${send} cursor-pointer text-blue-600 underline font-small hover:text-blue-800`}
                 title='Click to switch to get mode'
               >
                 Click here to get data
@@ -49,11 +49,11 @@ function Nofile() {
              <div className='flex flex-col items-end h-[20vh] w-[45vw] lg:w-[20vw]'>
                <div className={` h-[20vh] w-[45vw] lg:w-[20vw] flex flex-col items-end ${send}`} >
                 <input ref={inputsen} type="text" disabled className='h-[30%] w-[80%] bg-gray-100 border-1 my-1'/>
-                <button type="submit" className='h-[30%] w-[80%] bg-gray-400'>send</button>
+                <button type="submit" className=' h-[30%] w-[80%] bg-gray-400'>send</button>
               </div>
               <label
                 onClick={() => (setsend("visible"), setget("hidden"))}
-                className={`${get} cursor-pointer text-blue-600 underline font-medium hover:text-blue-800`}
+                className={`${get} cursor-pointer text-blue-600 underline font-small hover:text-blue-800`}
                 title='Click to switch to send mode'
               >
                 Click here to send data
