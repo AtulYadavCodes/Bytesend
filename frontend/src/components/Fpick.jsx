@@ -62,8 +62,9 @@ function Fpick() {
     <div className='bg-gray-50 min-h-[620px] h-[80vh] w-[90vw] lg:w-[40vw] drop-shadow-2xl rounded-2xl flex flex-col p-10'>
         <div id="form" className=' mb-1 min-h-[250px] h-[40vh] rounded-2xl bg-gray-50 '>
           <form>
-           <label className='block  text-gray-500 text-2xl  my-3 h-10 text-center font-bold text-nowrap overflow-hidden'>{lablete}</label>
-           <label  className='text-center block my-1'> .sh or .bat not allowed</label>
+           <label className='block  text-gray-500 text-2xl  my-2 h-10 text-center font-bold text-nowrap overflow-hidden'>{lablete}</label>
+           <label  className='text-center flex justify-center my-1 text-gray-500'>.sh or .bat extensions not allowed</label>
+          
            <div className='flex flex-row justify-center items-center'>
             <input type="file" id="input" onChange={filein} ref={inputref} hidden/>
            <label onClick={()=>(inputref.current.click())} className=' relative block min-h-40 h-[22vh] min-w-40 w-[22vh] bg-gray-100 text-center px-1 py-10  border-dashed border-1  rounded-2xl border-gray-500'>click to choose a file
@@ -83,7 +84,7 @@ function Fpick() {
           </div>
             <img  ref={imgref} alt=""  className='absolute '/>
         </div>
-
+     <label className='text-center text-sm mt-1 text-gray-500'>Time limit to download : 3 hours </label>
     </div>
   )
 }
