@@ -6,7 +6,7 @@ import { Analytics } from '@vercel/analytics/react'
 
 function Root() {
   return (
-    <div className='w-screen h-screen bg-gray-100 py-[1vh]'>
+    <div className='w-screen h-screen bg-[#020403]   py-[1vh]'>
       <Navbar />
       <div className='flex w-screen justify-center items-center'>
         <Outlet/>

@@ -59,33 +59,53 @@ function Fpick() {
   }
 
   return (
-    <div className='bg-gray-50 min-h-[620px] h-[80vh] w-[90vw] lg:w-[40vw] drop-shadow-2xl rounded-2xl flex flex-col p-10'>
-        <div id="form" className=' mb-1 min-h-[250px] h-[40vh] rounded-2xl bg-gray-50 '>
-          <form>
-           <label className='block  text-gray-500 text-2xl  my-2 h-10 text-center font-bold text-nowrap overflow-hidden'>{lablete}</label>
-           <label  className='text-center flex justify-center my-1 text-gray-500'>.sh or .bat extensions not allowed</label>
-          
-           <div className='flex flex-row justify-center items-center'>
-            <input type="file" id="input" onChange={filein} ref={inputref} hidden/>
-           <label onClick={()=>(inputref.current.click())} className=' relative block min-h-40 h-[22vh] min-w-40 w-[22vh] bg-gray-100 text-center px-1 py-10  border-dashed border-1  rounded-2xl border-gray-500'>click to choose a file
-            <br/>
+    <div className="bg-[var(--term-bg)] border border-[var(--term-border)] h-[80vh] w-[90vw] lg:w-[40vw] rounded-md flex flex-col p-4 font-mono text-[var(--term-text)]">
 
-            <img src={image} className='absolute h-10 w-10 left-1/2 -translate-x-1/2 p-1 mt-2' alt="" />
-            </label>
-           </div>
-           
-          </form>
-        </div>
-        <label className='w-full text-center p-0 mt-[10px] text-red-700'>{scantodownload}</label>
-        <div id="qrshow" className=' relative min-h-[282px] h-[40vh] mt-1 flex flex-row  justify-center  rounded-2xl items-center bg-gray-200'>
-          <label className='absolute mt-1 text-2xl'>{loading}</label>
-          <div className='min-h-40 h-[22vh] min-w-40 w-[22vh] m-1 bg-white'>
+  {/* Upload */}
+  <div className="flex flex-col items-center justify-center flex-1">
 
-          </div>
-            <img  ref={imgref} alt=""  className='absolute '/>
-        </div>
-     <label className='text-center text-sm mt-1 text-gray-500'>Time limit to download : 3 hours </label>
+    <div className="text-sm mb-2">
+      $ {lablete}
     </div>
+
+    <div
+      onClick={() => inputref.current.click()}
+      className="w-40 h-40 border border-dashed border-[var(--term-green-dim)] flex items-center justify-center cursor-pointer hover:bg-[var(--term-panel)] transition"
+    >
+      <span className="text-xs text-[var(--term-green)]">
+        click_to_upload()
+      </span>
+    </div>
+
+    <input type="file" ref={inputref} onChange={filein} hidden />
+
+    <div className="text-xs text-zinc-500 mt-2">
+      ! .sh / .bat blocked
+    </div>
+
+  </div>
+
+  {/* Status */}
+  <div className="text-center text-red-400 text-sm">
+    {scantodownload}
+  </div>
+
+  {/* QR */}
+  <div className="relative flex items-center justify-center bg-black border border-[var(--term-border)] h-[40%] mt-2">
+
+    <div className="absolute text-sm text-[var(--term-green-dim)]">
+      {loading}
+    </div>
+
+    <img ref={imgref} className="absolute" />
+
+  </div>
+
+  <div className="text-center text-xs text-zinc-500 mt-2">
+    expires_in: 3h
+  </div>
+
+</div>
   )
 }
 
