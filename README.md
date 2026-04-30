@@ -1,42 +1,39 @@
 # 📤 ByteSend – Anonymous File & Text Sharing App
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=nodejs,react,docker,nginx,tailwind,vite,express" />
+  <img src="https://skillicons.dev/icons?i=nodejs,react,docker,nginx,tailwind,vite,express,linux" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
-  <img src="https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
-  <img src="https://img.shields.io/badge/Dockerized-Yes-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
-  <img src="https://img.shields.io/badge/Proxy-NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white" />
-  <img src="https://img.shields.io/badge/UI-TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-  <img src="https://img.shields.io/badge/Bundler-Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/Stateless-Yes-22c55e?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Ephemeral-Storage-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/No%20Logs-True-black?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Dockerized-Stack-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
 </p>
 
 ---
 
-ByteSend is a lightweight **Node.js + React** app for quick, anonymous sharing of files and text — no sign-up, no logs, no history.
+## ✨ What is ByteSend?
 
-✨ Think of it as a **vanishing tunnel for data**:
+ByteSend is a **minimal, anonymous data transfer layer** built with Node.js and React.
 
-```
-Upload → Share → Disappear
-```
+No accounts. No persistence. No traces.
+
+
+Think of it as a **self-destructing bridge for data**.
 
 ---
 
-## 🚀 Features
+## 🚀 Core Features
 
-### 🧱 Core Design
-
-* ⚡ Stateless architecture (no accounts, no DB)
-* ⏳ Ephemeral storage with auto-expiry
-* 🔗 Short URL + QR code sharing
-* 🐳 Dockerized multi-container setup
-* 🔁 Horizontally scalable backend
-* 🔐 Secured via NGINX + UFW firewall
-* 🧹 Cron-based cleanup system
-* 🚀 CI/CD auto deployment
+* ⚡ **Stateless architecture** — no DB, no users
+* ⏳ **Ephemeral storage** — auto cleanup via cron
+* 🔗 **Short links + QR codes** for instant sharing
+* 🐳 **Dockerized multi-container system**
+* 🔁 **Horizontally scalable backend**
+* 🌐 **NGINX reverse proxy** for routing
+* 🔐 **Firewall secured (UFW)**
+* 🚀 **CI/CD auto deployment ready**
 
 ---
 
@@ -44,93 +41,94 @@ Upload → Share → Disappear
 
 ```mermaid
 flowchart LR
-    A[📤 Upload] --> B[⚛️ React Frontend]
-    B --> C[🌐 NGINX]
-    C --> D[🟢 Node Backend]
-    D --> E[💾 Temp Storage]
-    E --> F[🔗 Link + QR]
-    F --> G[📥 Download]
-    G --> H[🧹 Expiry]
+    U[User] --> FE[React Frontend]
+    FE --> NX[NGINX]
+    NX --> BE[Node Backend]
+    BE --> ST[(Ephemeral Storage)]
+    ST --> QR[Link + QR]
+    QR --> R[Receiver]
+    R --> DL[Download]
+    DL --> EX[Auto Expiry]
 ```
 
 ---
 
-## 🐳 Container Architecture
+## 🐳 Container Layout
 
 ```mermaid
 flowchart TB
     subgraph VPS
-        NGINX[🌐 NGINX]
-        FE[⚛️ Frontend]
-        BE1[🟢 Backend 1]
-        BE2[🟢 Backend 2]
-        STORAGE[(💾 Storage)]
-        CRON[⏳ Cron Job]
+        NGINX[NGINX]
+        FRONTEND[Frontend]
+        BACKEND1[Backend #1]
+        BACKEND2[Backend #2]
+        STORAGE[(Temp Storage)]
+        CRON[Cleanup Cron]
     end
 
-    FE --> NGINX
-    NGINX --> BE1
-    NGINX --> BE2
-    BE1 --> STORAGE
-    BE2 --> STORAGE
+    FRONTEND --> NGINX
+    NGINX --> BACKEND1
+    NGINX --> BACKEND2
+    BACKEND1 --> STORAGE
+    BACKEND2 --> STORAGE
     CRON --> STORAGE
 ```
 
 ---
 
-## 🔄 Request Flow
+## 🔄 Request Lifecycle
 
 ```mermaid
 sequenceDiagram
-    participant U as 👤 User
-    participant F as ⚛️ Frontend
-    participant N as 🌐 NGINX
-    participant B as 🟢 Backend
-    participant S as 💾 Storage
+    participant U as User
+    participant F as Frontend
+    participant N as NGINX
+    participant B as Backend
+    participant S as Storage
 
-    U->>F: Upload
-    F->>N: Request
+    U->>F: Upload file/text
+    F->>N: API request
     N->>B: Forward
-    B->>S: Store
-    B-->>F: Link + QR
-    Receiver->>N: Access
+    B->>S: Store temporarily
+    B-->>F: Return link + QR
+    Receiver->>N: Access link
     N->>B: Fetch
     B->>S: Retrieve
-    B-->>Receiver: Send
-    Note over S: Auto delete
+    B-->>Receiver: Deliver data
+    Note over S: Cron deletes after expiry
 ```
 
 ---
 
-## 📂 Features
+## 📂 Features Breakdown
 
-### 📁 File Sharing
+### 📁 File Transfer
 
-* 📦 Upload up to **99 MB**
-* 🕒 Temporary storage
-* 🧼 Filename removed
-* 📱 QR code access
+* 📦 Max size: **99 MB**
+* 🧼 Filename stripped for privacy
+* ⏳ Temporary storage
+* 📱 QR-based download
 
-### 📝 Text Sharing
+### 📝 Text Transfer
 
-* 🔐 Anonymous text transfer
+* 🔐 Anonymous text sharing
 * 🎟 Short retrieval code
+* ❌ No logs
 * ⏳ Auto-delete
 
 ---
 
 ## 🛠 Tech Stack
 
-| Layer         | Tech                       |
-| ------------- | -------------------------- |
-| ⚛️ Frontend   | React (Vite), Tailwind CSS |
-| 🟢 Backend    | Node.js, Express           |
-| 🔗 Networking | Axios                      |
-| 📦 Upload     | express-fileupload         |
-| 💾 Storage    | VPS ephemeral storage      |
-| 🌐 Infra      | Docker, NGINX              |
-| ⏳ Automation  | Cron jobs                  |
-| 📱 Extras     | QR Code API                |
+| Layer      | Stack                    |
+| ---------- | ------------------------ |
+| Frontend   | React + Vite + Tailwind  |
+| Backend    | Node.js + Express        |
+| Infra      | Docker + NGINX           |
+| Storage    | VPS ephemeral filesystem |
+| Automation | Cron jobs                |
+| Networking | Axios                    |
+| Extras     | QR Code API              |
 
 ---
 
@@ -149,16 +147,31 @@ filesharetextshare/
 ## ⚠ Limitations
 
 * 📏 Max file size: **99 MB**
-* ⏳ Temporary storage only
-* 🚫 Certain file types blocked
-* 📄 `.pdf` disabled intentionally
-* ❌ No recovery after expiry
+* ⏳ Files auto-deleted (no recovery)
+* 🚫 Restricted file types
+* 📄 `.pdf` intentionally blocked
 
 ---
 
-## 🔐 Security
+## 🔐 Security Model
 
 * 🕵️ No authentication
-* 🧾 No logs
-* 🧹 Auto cleanup
+* 🧾 No persistent logs
+* 🧹 Auto-expiry cleanup
 * 🛡 Reverse proxy + firewall
+
+---
+
+## 🧠 Design Philosophy
+
+ByteSend is built to be:
+
+* ⚡ Fast
+* 🧩 Stateless
+* 🧼 Disposable
+
+Not storage.
+
+A **vanishing transport layer for data**.
+
+---
