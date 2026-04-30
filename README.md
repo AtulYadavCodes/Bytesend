@@ -18,15 +18,30 @@ ByteSend is a lightweight Node.js + React app for quick, anonymous sharing of fi
 ## 🔄 Flow Diagram
 
 ```mermaid
-flowchart LR
-    A[User Uploads File/Text] --> B[React Frontend]
-    B --> C[NGINX Reverse Proxy]
-    C --> D[Node.js Backend]
-    D --> E[Temporary VPS Storage]
-    E --> F[Generate Short Link + QR]
-    F --> G[Receiver Access]
-    G --> H[Download File/Text]
-    H --> I[Auto Expiry via Cron]
+sequenceDiagram
+    participant U as User Device
+    participant FE as React Frontend
+    participant NX as NGINX (Reverse Proxy)
+    participant BE as Backend (Docker Containers)
+    participant ST as VPS Storage
+    participant CRON as Cron Cleanup
+
+    %% Upload Flow
+    U->>FE: Upload file / text
+    FE->>NX: API request
+    NX->>BE: Route + Load balance
+    BE->>ST: Store temporarily
+    BE-->>FE: Return short link + QR
+
+    %% Download Flow
+    U->>NX: Access link / QR
+    NX->>BE: Route request
+    BE->>ST: Fetch data
+    BE-->>U: Send file / text
+
+    %% Cleanup
+    CRON->>ST: Scan expired files
+    CRON->>ST: Delete expired data
 ```
 
 ---
@@ -47,7 +62,7 @@ flowchart LR
 * Auto-deletes after expiry — no database logs remain
 * Perfect for **secure, short-term data sharing
 
-💡 **Example Use Case:
+💡 **Example Use Case**:
 On a call with a teammate, you need to send them a temporary API key or database password without posting it in chat where it might be stored.
 Paste it into ByteSend, share the retrieval code, and it self-destructs after a few hours.
 
