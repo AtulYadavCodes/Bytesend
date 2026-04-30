@@ -1,177 +1,116 @@
 # 📤 ByteSend – Anonymous File & Text Sharing App
 
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=nodejs,react,docker,nginx,tailwind,vite,express,linux" />
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Stateless-Yes-22c55e?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Ephemeral-Storage-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/No%20Logs-True-black?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Dockerized-Stack-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
-</p>
+ByteSend is a lightweight Node.js + React app for quick, anonymous sharing of files and text — no sign-up, no logs, no history. It is designed as a stateless, ephemeral transfer layer for moving data across devices using short links and QR codes, without long-term storage.
 
 ---
 
-## ✨ What is ByteSend?
+## 🚀 Features
 
-ByteSend is a **minimal, anonymous data transfer layer** built with Node.js and React.
+### 🧱 High-level design
 
-No accounts. No persistence. No traces.
-
-
-Think of it as a **self-destructing bridge for data**.
-
----
-
-## 🚀 Core Features
-
-* ⚡ **Stateless architecture** — no DB, no users
-* ⏳ **Ephemeral storage** — auto cleanup via cron
-* 🔗 **Short links + QR codes** for instant sharing
-* 🐳 **Dockerized multi-container system**
-* 🔁 **Horizontally scalable backend**
-* 🌐 **NGINX reverse proxy** for routing
-* 🔐 **Firewall secured (UFW)**
-* 🚀 **CI/CD auto deployment ready**
+* Stateless transfer flow: upload on one device, retrieve on another via short URL or QR, then let it expire.
+* Ephemeral storage on a VPS-backed file service, with automatic expiry to keep data short-lived.
+* Currently deployed on a VPS as a three-container stack (frontend, replicated backend, and NGINX reverse proxy) for horizontal scaling.
+* Secured and automated with UFW firewall rules, cron-based cleanup of expired files, and CI/CD that rebuilds and redeploys containers on new pushes.
 
 ---
 
-## 🧩 System Architecture
+## 🔄 Flow Diagram
 
 ```mermaid
 flowchart LR
-    U[User] --> FE[React Frontend]
-    FE --> NX[NGINX]
-    NX --> BE[Node Backend]
-    BE --> ST[(Ephemeral Storage)]
-    ST --> QR[Link + QR]
-    QR --> R[Receiver]
-    R --> DL[Download]
-    DL --> EX[Auto Expiry]
+    A[User Uploads File/Text] --> B[React Frontend]
+    B --> C[NGINX Reverse Proxy]
+    C --> D[Node.js Backend]
+    D --> E[Temporary VPS Storage]
+    E --> F[Generate Short Link + QR]
+    F --> G[Receiver Access]
+    G --> H[Download File/Text]
+    H --> I[Auto Expiry via Cron]
 ```
 
 ---
 
-## 🐳 Container Layout
+### 📂 File Upload & Share
 
-```mermaid
-flowchart TB
-    subgraph VPS
-        NGINX[NGINX]
-        FRONTEND[Frontend]
-        BACKEND1[Backend #1]
-        BACKEND2[Backend #2]
-        STORAGE[(Temp Storage)]
-        CRON[Cleanup Cron]
-    end
-
-    FRONTEND --> NGINX
-    NGINX --> BACKEND1
-    NGINX --> BACKEND2
-    BACKEND1 --> STORAGE
-    BACKEND2 --> STORAGE
-    CRON --> STORAGE
-```
+* Upload files up to 99 MB (app limit) — backend and storage tuned for small, bursty transfers
+* Files are stored in temporary space on a VPS and expire automatically after a short time window (ephemeral by design)
+* **Original filenames are removed** for privacy
+* Generates an instant QR code for easy mobile download
 
 ---
 
-## 🔄 Request Lifecycle
+### 📝 Text Send & Retrieve
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant F as Frontend
-    participant N as NGINX
-    participant B as Backend
-    participant S as Storage
+* Send text snippets anonymously
+* Receive a short retrieval code to share
+* Auto-deletes after expiry — no database logs remain
+* Perfect for **secure, short-term data sharing
 
-    U->>F: Upload file/text
-    F->>N: API request
-    N->>B: Forward
-    B->>S: Store temporarily
-    B-->>F: Return link + QR
-    Receiver->>N: Access link
-    N->>B: Fetch
-    B->>S: Retrieve
-    B-->>Receiver: Deliver data
-    Note over S: Cron deletes after expiry
-```
+💡 **Example Use Case:
+On a call with a teammate, you need to send them a temporary API key or database password without posting it in chat where it might be stored.
+Paste it into ByteSend, share the retrieval code, and it self-destructs after a few hours.
 
 ---
 
-## 📂 Features Breakdown
+## 📸 Screenshots
 
-### 📁 File Transfer
+### File Upload & Share
 
-* 📦 Max size: **99 MB**
-* 🧼 Filename stripped for privacy
-* ⏳ Temporary storage
-* 📱 QR-based download
+![ByteSend File Upload](./file.png)
 
-### 📝 Text Transfer
+### Text Send & Retrieve
 
-* 🔐 Anonymous text sharing
-* 🎟 Short retrieval code
-* ❌ No logs
-* ⏳ Auto-delete
-
----
+![ByteSend Text Send](./ftex.png)
 
 ## 🛠 Tech Stack
 
-| Layer      | Stack                    |
-| ---------- | ------------------------ |
-| Frontend   | React + Vite + Tailwind  |
-| Backend    | Node.js + Express        |
-| Infra      | Docker + NGINX           |
-| Storage    | VPS ephemeral filesystem |
-| Automation | Cron jobs                |
-| Networking | Axios                    |
-| Extras     | QR Code API              |
+* Backend: Node.js, Express
+* Frontend: React (Vite) + Tailwind CSS
+* File Upload: `express-fileupload`, `FormData`
+* Networking: Axios
+* Storage: VPS-backed temporary file storage with auto-expiry
+* Extras: QR Code API
 
 ---
 
 ## 📂 Project Structure
 
-```
+```text
 filesharetextshare/
-├── docker-compose.yml
-├── backend/
-├── frontend/
+│
+├── docker-compose.yml          # Frontend + backend stack definition
+│
+├── backend/                    # Node.js + Express backend
+│   ├── Dockerfile
+│   ├── index.js                # Server entry
+│   ├── package.json
+│   └── src/
+│       ├── app.js              # Express app config
+│       ├── controllers/
+│       │   └── transferController.js
+│       └── routes/
+│           └── transferRoutes.js
+│
+├── frontend/                   # React (Vite) frontend
+│   ├── Dockerfile
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   └── src/
+│       ├── main.jsx
+│       ├── Root.jsx
+│       ├── index.css
+│       └── components/
+│           ├── Fpick.jsx
+│           ├── Navbar.jsx
+│           └── Nofile.jsx
+│
 └── README.md
 ```
 
----
-
 ## ⚠ Limitations
 
-* 📏 Max file size: **99 MB**
-* ⏳ Files auto-deleted (no recovery)
-* 🚫 Restricted file types
-* 📄 `.pdf` intentionally blocked
-
----
-
-## 🔐 Security Model
-
-* 🕵️ No authentication
-* 🧾 No persistent logs
-* 🧹 Auto-expiry cleanup
-* 🛡 Reverse proxy + firewall
-
----
-
-## 🧠 Design Philosophy
-
-ByteSend is built to be:
-
-* ⚡ Fast
-* 🧩 Stateless
-* 🧼 Disposable
-
-Not storage.
-
-A **vanishing transport layer for data**.
-
----
+* Max file size: 99 MB (app enforced)
+* Files are stored only temporarily on the VPS and cleaned up automatically after a short lifetime
+* Certain file types blocked for security
