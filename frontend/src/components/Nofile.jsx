@@ -28,41 +28,64 @@ function Nofile() {
 
   
   return (
-    <div className='bg-gray-100 h-[80vh] w-[90vw] lg:w-[40vw] drop-shadow-2xl rounded-2xl flex flex-col p-10'>
-        <div>
-          <form onSubmit={formsubmit}>
-            <textarea ref={inputref} placeholder='Enter text here' className=' border-1 text-2xl text-left  h-[50vh] w-full bg-gray-20 text-nowrap resize-none'/>
-            <div className='h-[20vh] w-full rounded-2xl flex flex-row'>
-              <div className='h-[20vh] w-[45vw] lg:w-[20vw] flex flex-col items-start '>
-                <div className= {`h-[20vh]  w-[45vw] lg:w-[20vw] flex flex-col items-start ${get}`}>
-                <input ref={getinput} type='text' placeholder='enter code' className='h-[30%] w-[80%] bg-gray-100 border-1 my-1'/>
-                <button  onClick={gtext} type='button' ref={getbut} className='h-[30%] w-[80%] bg-blue-300 '>Get</button>
-              </div>
-              <label
-                onClick={() => (setget("visible"), setsend("hidden"))}
-                className={`${send} cursor-pointer text-blue-600 underline font-small hover:text-blue-800`}
-                title='Click to switch to get mode'
-              >
-                Click here to get data
-              </label>
-              </div>
-             <div className='flex flex-col items-end h-[20vh] w-[45vw] lg:w-[20vw]'>
-               <div className={` h-[20vh] w-[45vw] lg:w-[20vw] flex flex-col items-end ${send}`} >
-                <input ref={inputsen} type="text" disabled className='h-[30%] w-[80%] bg-gray-100 border-1 my-1'/>
-                <button type="submit" className=' h-[30%] w-[80%] bg-gray-400'>send</button>
-              </div>
-              <label
-                onClick={() => (setsend("visible"), setget("hidden"))}
-                className={`${get} cursor-pointer text-blue-600 underline font-small hover:text-blue-800`}
-                title='Click to switch to send mode'
-              >
-                Click here to send data
-              </label>
-             </div>
-            </div>
-            </form>
+   <div className="bg-[var(--term-bg)] border border-[var(--term-border)] h-[80vh] w-[90vw] lg:w-[40vw] rounded-md flex flex-col p-4 font-mono text-[var(--term-text)]">
+
+  <form onSubmit={formsubmit} className="flex flex-col h-full">
+
+    <textarea
+      ref={inputref}
+      placeholder="$ enter text..."
+      className="flex-1 bg-black border border-[var(--term-border)] p-3 text-sm resize-none focus:outline-none"
+    />
+
+    <div className="mt-3 flex gap-3 text-sm">
+
+
+      <div className="w-full">
+        <div className={`${get} space-y-2`}>
+          <input
+            ref={getinput}
+            placeholder="> enter code"
+            className="w-full bg-black border border-[var(--term-border)] px-2 py-1"
+          />
+          <button className="w-full border border-[var(--term-green)] text-[var(--term-green)] hover:bg-[var(--term-green)] hover:text-black transition py-1">
+            run get
+          </button>
         </div>
+
+        <div
+          onClick={() => (setget("visible"), setsend("hidden"))}
+          className={`${send} mt-2 text-xs text-[var(--term-green-dim)] cursor-pointer`}
+        >
+          $ switch to GET
+        </div>
+      </div>
+
+
+      <div className="w-full text-right">
+        <div className={`${send} space-y-2`}>
+          <input
+            ref={inputsen}
+            disabled
+            className="w-full bg-black border border-[var(--term-border)] px-2 py-1 text-right"
+          />
+          <button className="w-full border border-[var(--term-green)] text-[var(--term-green)] hover:bg-[var(--term-green)] hover:text-black transition py-1">
+            send
+          </button>
+        </div>
+
+        <div
+          onClick={() => (setsend("visible"), setget("hidden"))}
+          className={`${get} mt-2 text-xs text-[var(--term-green-dim)] cursor-pointer`}
+        >
+          $ switch to SEND
+        </div>
+      </div>
+
     </div>
+
+  </form>
+</div>
   )
 }
 
