@@ -48,9 +48,13 @@ function Nofile() {
             placeholder="> enter code"
             className="w-full bg-black border border-[var(--term-border)] px-2 py-1"
           />
-          <button className="w-full border border-[var(--term-green)] text-[var(--term-green)] hover:bg-[var(--term-green)] hover:text-black transition py-1">
-            run get
-          </button>
+          <button
+  type="button"
+  onClick={gtext}
+  className="w-full border border-[var(--term-green)] text-[var(--term-green)] hover:bg-[var(--term-green)] hover:text-black transition py-1"
+>
+  run get
+</button>
         </div>
 
         <div
