@@ -7,48 +7,46 @@ function Fpick() {
   const inputref = useRef(null);
   const imgref = useRef(null);
 
-  const [label, setLabel] = useState("Select file to share");
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState("QR Code");
-  const [progress, setProgress] = useState(0);
+  const [lablete, setlabelte] = useState("Select files to share");
+  const [loading, setloading] = useState("QR Code");
+  const [scantodownload, setscantodownload] = useState("");
 
-  const handleUpload = async (file) => {
+  const filetoserve = async (file) => {
     if (
       file.size < 99 * 1024 * 1024 &&
       !(file.name.endsWith(".sh") || file.name.endsWith(".bat"))
     ) {
-      setStatus("");
-      setLoading("uploading...");
-      setProgress(0);
+      setscantodownload("");
+      setloading("loading...");
 
       const formdata = new FormData();
       formdata.append("file", file);
 
       try {
-        const res = await axios.post(`${API_BASE}/fapi`, formdata, {
-          onUploadProgress: (e) => {
-            setProgress(Math.round((e.loaded * 100) / e.total));
-          },
-        });
+        const res = await axios.post(`${API_BASE}/fapi`, formdata);
 
-        const qr = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${res.data.url}`;
+        const filep = res.data.url;
+        const qr = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${filep}`;
+
         imgref.current.src = qr;
-
-        setLoading("ready");
-        setStatus("scan to download");
+        setloading("ready");
+        setscantodownload("scan to download your file");
       } catch (err) {
-        setLoading("QR Code");
-        setStatus(err?.response?.data || "upload failed");
+        setloading("QR Code");
+        setscantodownload(err?.response?.data || "upload failed");
       }
     } else {
-      setStatus("file too large / unsupported");
+      setscantodownload("file > 99MB / unsupported");
     }
   };
 
-  const handleFile = (file) => {
+  const filein = () => {
+    const file = inputref.current?.files?.[0];
     if (file) {
-      setLabel(file.name);
-      handleUpload(file);
+      setlabelte(file.name);
+      filetoserve(file);
+    } else {
+      setlabelte("no file selected");
     }
   };
 
@@ -56,88 +54,69 @@ function Fpick() {
     <div className="
       bg-[var(--term-bg)] border border-[var(--term-border)]
       w-[90vw] lg:w-[40vw]
-      h-[85vh]
+      min-h-[80svh] md:min-h-[80dvh] max-h-[85dvh]
       rounded-md flex flex-col p-4 font-mono text-[var(--term-text)]
     ">
 
-      {/* HEADER */}
-      <div className="text-xs text-[var(--term-green-dim)] mb-3 truncate">
-        $ {label}
-      </div>
+      {/* Upload */}
+      <div className="flex flex-col items-center justify-center flex-1 min-h-0">
 
-      {/* MAIN STAGE */}
-      <div className="flex flex-col flex-1 gap-4">
+        <div className="text-sm mb-2 truncate">
+          $ {lablete}
+        </div>
 
-        {/* UPLOAD ZONE */}
         <div
           onClick={() => inputref.current.click()}
           className="
-            flex-1
+            w-32 h-32 sm:w-40 sm:h-40
             border border-dashed border-[var(--term-green-dim)]
             flex items-center justify-center
-            cursor-pointer
-            hover:bg-[var(--term-panel)]
+            cursor-pointer hover:bg-[var(--term-panel)]
             transition
           "
         >
-          <span className="text-sm text-[var(--term-green)]">
-            click_or_upload()
+          <span className="text-xs text-[var(--term-green)] text-center px-2">
+            click_to_upload()
           </span>
         </div>
 
-        <input
-          type="file"
-          ref={inputref}
-          hidden
-          onChange={(e) => handleFile(e.target.files[0])}
+        <input type="file" ref={inputref} onChange={filein} hidden />
+
+        <div className="text-xs text-zinc-500 mt-2 text-center">
+          ! .sh / .bat blocked
+        </div>
+
+      </div>
+
+      {/* Status */}
+      <div className="text-center text-red-400 text-sm flex-shrink-0">
+        {scantodownload}
+      </div>
+
+      {/* QR */}
+      <div className="
+        relative flex items-center justify-center
+        bg-black border border-[var(--term-border)]
+        flex-[0.8] min-h-[120px]
+        mt-2 overflow-hidden
+      ">
+
+        <div className="absolute text-sm text-[var(--term-green-dim)]">
+          {loading}
+        </div>
+
+        <img
+          ref={imgref}
+          className="absolute max-h-full max-w-full object-contain"
         />
 
-        {/* QR ZONE */}
-        <div className="
-          flex-1
-          relative
-          flex items-center justify-center
-          bg-black border border-[var(--term-border)]
-        ">
-          <div className="absolute text-xs text-[var(--term-green-dim)]">
-            {loading}
-          </div>
-
-          <img
-            ref={imgref}
-            className="absolute opacity-90 transition-opacity duration-300"
-          />
-        </div>
       </div>
 
-      {/* CONTROL PANEL */}
-      <div className="mt-3 flex flex-col gap-2 text-sm">
-
-        {/* Progress */}
-        {progress > 0 && progress < 100 && (
-          <div className="w-full">
-            <div className="h-1 bg-[var(--term-border)]">
-              <div
-                className="h-1 bg-[var(--term-green)] transition-all"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <div className="text-xs text-[var(--term-green-dim)] mt-1">
-              uploading {progress}%
-            </div>
-          </div>
-        )}
-
-        {/* Status */}
-        <div className="text-center text-[var(--term-green-dim)]">
-          {status || "! .sh / .bat blocked"}
-        </div>
-
-        {/* Footer */}
-        <div className="text-center text-xs text-[var(--term-green-dim)]">
-          expires_in: 3h
-        </div>
+      {/* Footer */}
+      <div className="text-center text-xs text-zinc-500 mt-2 flex-shrink-0">
+        expires_in: 3h
       </div>
+
     </div>
   );
 }
