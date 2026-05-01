@@ -1,115 +1,145 @@
-import React, {useState, useRef } from 'react'
-import axios from 'axios'
-import image from '../assets/free-file-icon-1453-thumb.png'
-import plaeho from '../assets/gold-border-coton-tulear-breeder-puppies-for-sale-texas-1.png'
+import React, { useRef, useState } from "react";
+import axios from "axios";
 
-const API_BASE='/api';
-let qr,link;
+const API_BASE = "/api";
 
 function Fpick() {
-  const inputref=useRef(null);
-  let [loading,setloading]=useState("QR Code");
-  let [lablete,setlabelte]=useState("Select files to share");
-  let [scantodownload,setscantodownload]=useState('');
-  let imgref=useRef(null);
+  const inputref = useRef(null);
+  const imgref = useRef(null);
 
-  function filetoserve(file)
-  {
-    if(file.size<99*1024*1024 && !(file.name.endsWith(".sh")|| file.name.endsWith(".bat")))
-    {
-      setscantodownload('');
-      setloading("loading....");
-      imgref.current.style.opacity=0;
+  const [label, setLabel] = useState("Select file to share");
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState("QR Code");
+  const [progress, setProgress] = useState(0);
 
-      const formdata=new FormData();
-      formdata.append('file',file);
+  const handleUpload = async (file) => {
+    if (
+      file.size < 99 * 1024 * 1024 &&
+      !(file.name.endsWith(".sh") || file.name.endsWith(".bat"))
+    ) {
+      setStatus("");
+      setLoading("uploading...");
+      setProgress(0);
 
-      axios({
-        method:'post',
-        url:`${API_BASE}/fapi`,
-        data:formdata,
-      }).then(async (response)=>
-      {
-        imgref.current.style.opacity=1;
-        let filep=`${response.data.url}`;
-        qr=`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${filep}`;
-        imgref.current.src=qr
-        setscantodownload('scan to download your file');
-      }).catch((err)=>
-      {
-        setloading("QR Code");
-        setscantodownload(err.response.data);
-      })
+      const formdata = new FormData();
+      formdata.append("file", file);
+
+      try {
+        const res = await axios.post(`${API_BASE}/fapi`, formdata, {
+          onUploadProgress: (e) => {
+            setProgress(Math.round((e.loaded * 100) / e.total));
+          },
+        });
+
+        const qr = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${res.data.url}`;
+        imgref.current.src = qr;
+
+        setLoading("ready");
+        setStatus("scan to download");
+      } catch (err) {
+        setLoading("QR Code");
+        setStatus(err?.response?.data || "upload failed");
+      }
+    } else {
+      setStatus("file too large / unsupported");
     }
-    else
-      setscantodownload("file > 99 mb/ not supported.....select another")
-  }
+  };
 
-  function filein()
-  {
-    if(inputref.current&&inputref.current.files&&inputref.current.files[0])
-    {
-      setlabelte(inputref.current.files[0].name);
-      filetoserve(inputref.current.files[0]);
+  const handleFile = (file) => {
+    if (file) {
+      setLabel(file.name);
+      handleUpload(file);
     }
-    else
-    {
-      setlabelte("no file selected, choose again");
-    }
-  }
+  };
 
   return (
-    <div className="bg-[var(--term-bg)] border border-[var(--term-border)]
-    w-[90vw] lg:w-[40vw]
-    max-h-[85vh] overflow-auto
-    rounded-md flex flex-col p-4 font-mono text-[var(--term-text)]">
+    <div className="
+      bg-[var(--term-bg)] border border-[var(--term-border)]
+      w-[90vw] lg:w-[40vw]
+      h-[85vh]
+      rounded-md flex flex-col p-4 font-mono text-[var(--term-text)]
+    ">
 
-      {/* Upload */}
-      <div className="flex flex-col items-center justify-start md:justify-center flex-1 min-h-0">
+      {/* HEADER */}
+      <div className="text-xs text-[var(--term-green-dim)] mb-3 truncate">
+        $ {label}
+      </div>
 
-        <div className="text-sm mb-2">
-          $ {lablete}
-        </div>
+      {/* MAIN STAGE */}
+      <div className="flex flex-col flex-1 gap-4">
 
+        {/* UPLOAD ZONE */}
         <div
           onClick={() => inputref.current.click()}
-          className="w-40 h-40 border border-dashed border-[var(--term-green-dim)] flex items-center justify-center cursor-pointer hover:bg-[var(--term-panel)] transition"
+          className="
+            flex-1
+            border border-dashed border-[var(--term-green-dim)]
+            flex items-center justify-center
+            cursor-pointer
+            hover:bg-[var(--term-panel)]
+            transition
+          "
         >
-          <span className="text-xs text-[var(--term-green)]">
-            click_to_upload()
+          <span className="text-sm text-[var(--term-green)]">
+            click_or_upload()
           </span>
         </div>
 
-        <input type="file" ref={inputref} onChange={filein} hidden />
+        <input
+          type="file"
+          ref={inputref}
+          hidden
+          onChange={(e) => handleFile(e.target.files[0])}
+        />
 
-        <div className="text-xs text-zinc-500 mt-2">
-          ! .sh / .bat blocked
+        {/* QR ZONE */}
+        <div className="
+          flex-1
+          relative
+          flex items-center justify-center
+          bg-black border border-[var(--term-border)]
+        ">
+          <div className="absolute text-xs text-[var(--term-green-dim)]">
+            {loading}
+          </div>
+
+          <img
+            ref={imgref}
+            className="absolute opacity-90 transition-opacity duration-300"
+          />
+        </div>
+      </div>
+
+      {/* CONTROL PANEL */}
+      <div className="mt-3 flex flex-col gap-2 text-sm">
+
+        {/* Progress */}
+        {progress > 0 && progress < 100 && (
+          <div className="w-full">
+            <div className="h-1 bg-[var(--term-border)]">
+              <div
+                className="h-1 bg-[var(--term-green)] transition-all"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <div className="text-xs text-[var(--term-green-dim)] mt-1">
+              uploading {progress}%
+            </div>
+          </div>
+        )}
+
+        {/* Status */}
+        <div className="text-center text-[var(--term-green-dim)]">
+          {status || "! .sh / .bat blocked"}
         </div>
 
-      </div>
-
-      {/* Status */}
-      <div className="text-center text-red-400 text-sm">
-        {scantodownload}
-      </div>
-
-      {/* QR */}
-      <div className="relative flex items-center justify-center bg-black border border-[var(--term-border)] h-40 md:h-48 mt-2 flex-shrink-0">
-
-        <div className="absolute text-sm text-[var(--term-green-dim)]">
-          {loading}
+        {/* Footer */}
+        <div className="text-center text-xs text-[var(--term-green-dim)]">
+          expires_in: 3h
         </div>
-
-        <img ref={imgref} className="absolute" />
-
       </div>
-
-      <div className="text-center text-xs text-zinc-500 mt-2">
-        expires_in: 3h
-      </div>
-
     </div>
-  )
+  );
 }
 
-export default Fpick
+export default Fpick;
