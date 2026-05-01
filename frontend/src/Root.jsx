@@ -1,18 +1,17 @@
 import React from 'react'
 import Navbar from './components/Navbar.jsx'
 import { Outlet } from 'react-router'
-// 1. Import the Analytics component
 import { Analytics } from '@vercel/analytics/react'
 
 function Root() {
   return (
-    <div className='w-screen h-screen bg-[#020403]   py-[1vh] overflow-auto'>
+    <div className="min-h-screen flex flex-col bg-[#020403]">
       <Navbar />
-      <div className='flex w-screen justify-center items-center'>
-        <Outlet/>
-      </div>
-      
-      {/* 2. Add the Analytics component here */}
+
+      <main className="flex-1 overflow-auto flex justify-center p-2">
+        <Outlet />
+      </main>
+
       <Analytics />
     </div>
   )
