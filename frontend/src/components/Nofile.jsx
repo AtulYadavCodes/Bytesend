@@ -4,16 +4,16 @@ import axios from 'axios';
 const API_BASE='/api';
 
 function Nofile() {
-  let [get,setget]=useState("hidden");
-  let [send,setsend]=useState("visible");
-  let inputref=useRef(null);
-  let inputsen=useRef(null);
-  let getbut=useRef(null);
-  let getinput=useRef(null);
+  const [get,setget]=useState("hidden");
+  const [send,setsend]=useState("visible");
+  const inputref=useRef(null);
+  const inputsen=useRef(null);
+  const getbut=useRef(null);
+  const getinput=useRef(null);
 
-  let [v,setv]=useState("");
+  const [v,setv]=useState("");
 
-  let formsubmit=(event)=>
+  const formsubmit=(event)=>
   {
     event.preventDefault();
     inputsen.current.value="loading....";
@@ -24,7 +24,7 @@ function Nofile() {
     })
   }
 
-  let gtext=(event)=>{
+  const gtext=(event)=>{
     inputref.current.value="loading....";
     if(getinput.current.value.length>0)
     {
